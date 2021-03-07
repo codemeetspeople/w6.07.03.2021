@@ -22,9 +22,8 @@ CREATE TABLE "item" (
     item_price NUMERIC(8, 2) NOT NULL
 );
 
-INSERT INTO "category" (category_title) VALUES ('Smartphones');
-INSERT INTO "category" (category_title) VALUES ('Tablets');
-INSERT INTO "category" (category_title) VALUES ('Smartwatches');
+INSERT INTO "category" (category_title) VALUES
+('Smartphones'), ('Tablets'), ('Smartwatches');
 
 SELECT * FROM "category";
 SELECT category_title FROM "category";
@@ -64,3 +63,37 @@ DELETE FROM "item" WHERE item_id = 3;
 -- 17. Выбрать наименование самого дешевого товара.
 -- 18. Выбрать количество всех товаров.
 -- 19. Выбрать среднюю цену всех товаров.
+
+select * from item join category on item.category_id = category.category_id;
+select * from item natural join category;
+
+
+INSERT INTO "item" (category_id, item_title, item_price) VALUES
+(4, 'GoPro', 999.99);
+
+
+CREATE TABLE "category" (
+    category_id SERIAL PRIMARY KEY,
+    category_title VARCHAR(100) NOT NULL UNIQUE
+);
+
+CREATE TABLE "item" (
+    item_id SERIAL PRIMARY KEY,
+    category_id INTEGER NOT NULL REFERENCES "category"(category_id) ON DELETE CASCADE,
+    item_title VARCHAR(100) NOT NULL,
+    item_price NUMERIC(8, 2) NOT NULL
+);
+
+CREATE TABLE "item" (
+    item_id SERIAL PRIMARY KEY,
+    category_id INTEGER NULL REFERENCES "category"(category_id) ON DELETE SET NULL,
+    item_title VARCHAR(100) NOT NULL,
+    item_price NUMERIC(8, 2) NOT NULL
+);
+
+CREATE TABLE "item" (
+    item_id SERIAL PRIMARY KEY,
+    category_id INTEGER NOT NULL DEFAULT 1 REFERENCES "category"(category_id) ON DELETE SET DEFAULT,
+    item_title VARCHAR(100) NOT NULL,
+    item_price NUMERIC(8, 2) NOT NULL
+);
